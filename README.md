@@ -12,7 +12,7 @@ provides basic summaries of your deck.
 
 This is not meant to replace the `17Lands` client, you can still have that running.
 
-This is forked from the client itself, and all the credit for the hard work goes to 
+This is forked from the client, and all the credit for the hard work goes to 
 the team at http://www.17lands.com.
 
 ## Installation/Run Instructions
@@ -24,7 +24,6 @@ the team at http://www.17lands.com.
 - save each set you care about as a different page under one dir. Filename should be data/{set}_card_ratings.html 
   - this can be done by going to https://www.17lands.com/card_ratings and changing the set, then right-clicking and using "save as"
 - start this jupyter notebook (making sure the card_list and set data are in data/) with `jupyter notebook` to start the server, then open the file
-- update the path to your log file (can be found in 17Lands client)
 - run all the cells - the last one will start the app, and will run continuously
 - go to localhost:8050/ to see the app!
 

@@ -6,7 +6,17 @@ the interaction with `17lands.com`. Instead, it regularly re-parses your log fil
 events it needs to watch your draft) to provide you the 17Lands stats relating to your chosen cards. It also
 provides basic summaries of your deck.
 
-![Demo of the app](/img/example.png)
+![Demo of the app](/img/example_of_end_of_human_draft.png)
+
+# Functionality
+
+The app currently presents the following information for you:
+
+- The relevant 17Lands data for the cards available in the current round (pack/pick). The columns you see are customizable in the notebook
+- The number of cards of each color that have been passed to you so far this draft
+- An estimate of "openness" of each color, calculated using the ALSA 
+- A table containing the stats of the cards you've picked so far
+- Summary stats on the cards you've picked so far including counts of types and colors
 
 ## Considerations
 

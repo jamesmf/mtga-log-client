@@ -162,25 +162,33 @@ IS_SUCCESS_CODE = lambda code: code >= 200 and code < 300
 DEFAULT_RETRY_SLEEP_TIME = 1
 
 
-def extract_time(time_str):
+# def extract_time(time_str):
+#     """
+#     Convert a time string in various formats to a datetime.
+
+#     :param time_str: The string to convert.
+
+#     :returns: The resulting datetime object.
+#     :raises ValueError: Raises an exception if it cannot interpret the string.
+#     """
+#     time_str = STRIPPED_TIMESTAMP_REGEX.match(time_str).group(1)
+#     if ": " in time_str:
+#         time_str = time_str.split(": ")[0]
+
+#     for possible_format in TIME_FORMATS:
+#         try:
+#             return datetime.datetime.strptime(time_str, possible_format)
+#         except ValueError:
+#             pass
+#     raise ValueError(f'Unsupported time format: "{time_str}"')
+
+
+def extract_time(time_str: str):
     """
-    Convert a time string in various formats to a datetime.
-
-    :param time_str: The string to convert.
-
-    :returns: The resulting datetime object.
-    :raises ValueError: Raises an exception if it cannot interpret the string.
+    Override the time extraction as it costs a fair amount of
+    computational overhead and we don't use it in the app
     """
-    time_str = STRIPPED_TIMESTAMP_REGEX.match(time_str).group(1)
-    if ": " in time_str:
-        time_str = time_str.split(": ")[0]
-
-    for possible_format in TIME_FORMATS:
-        try:
-            return datetime.datetime.strptime(time_str, possible_format)
-        except ValueError:
-            pass
-    raise ValueError(f'Unsupported time format: "{time_str}"')
+    return datetime.datetime.now()
 
 
 def json_value_matches(expectation, path, blob):
@@ -298,22 +306,24 @@ class Follower:
         logger.info(f"{response.status_code} Response: {response.text}")
         return response
 
-    def parse_log(self, filename, follow):
+    def parse_log(self, filename, follow, skip_bytes: int = 0):
         """
         Parse messages from a log file and pass the data along to the API endpoint.
 
         :param filename: The filename for the log file to parse.
         :param follow:   Whether or not to continue looking for updates to the file after parsing
                          all the initial lines.
+        :param skip_bytes: A number of bytes to skip. SET THIS ABOVE 0 AT YOUR OWN RISK
         """
         while True:
             last_read_time = time.time()
             last_file_size = 0
             try:
                 with open(filename, errors="replace") as f:
+                    file_size = pathlib.Path(filename).stat().st_size
+                    f.seek(skip_bytes)
                     while True:
                         line = f.readline()
-                        file_size = pathlib.Path(filename).stat().st_size
                         if line:
                             self.__append_line(line)
                             last_read_time = time.time()
